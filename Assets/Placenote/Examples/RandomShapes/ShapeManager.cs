@@ -75,6 +75,7 @@ public class ShapeManager : MonoBehaviour
 
                 Vector3 hitPosition = PNUtility.MatrixOps.GetPosition(placenoteTransform.Value);
                 Quaternion hitRotation = PNUtility.MatrixOps.GetRotation(placenoteTransform.Value);
+                PanelSetMessage.SetActive(true);
                 isAllowSetMarker = false;
                 ShapeInfo shapeInfo = new ShapeInfo();
                 shapeInfo.px = hitPosition.x;
