@@ -24,8 +24,8 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 	[SerializeField] Slider mRadiusSlider;
 	[SerializeField] float mMaxRadiusSearch;
 	[SerializeField] Text mRadiusLabel;
-
-	private UnityARSessionNativeInterface mSession;
+    [SerializeField] InputField SetMessage;
+    private UnityARSessionNativeInterface mSession;
 
 	private bool mARInit = false;
 
@@ -271,8 +271,9 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 				});
 			Debug.Log ("Started Debug Report");
 		}
+        GetComponent<ShapeManager>().isAllowSetMarker = true;
 
-	}
+    }
 
 	private void StartARKit ()
 	{
@@ -294,7 +295,11 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 		mSession.RunWithConfig (config);
  		#endif
 	}
-
+    public void OnSetMessage()
+    {
+        GetComponent<ShapeManager>().SetLabel(SetMessage.text);
+        SetMessage.text = "";
+    }
 
 	public void OnSaveMapClick ()
 	{
@@ -356,7 +361,8 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 				}
 			}
 		);
-	}
+        GetComponent<ShapeManager>().isAllowSetMarker = false;
+    }
 
 	public void OnPose (Matrix4x4 outputPose, Matrix4x4 arkitPose) {}
 

@@ -32,7 +32,7 @@ namespace ARKitHitTesting
     {
 
         public GameObject modelPrefab; // 3 prefabs are attached in the inspector
-
+        
         public List<ModelInfo> ModelInfoList = new List<ModelInfo>();
         public List<GameObject> ModelObjList = new List<GameObject>();
 

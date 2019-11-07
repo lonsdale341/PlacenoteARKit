@@ -20,6 +20,7 @@ public class ShapeInfo
     public float qw;
     public int shapeType;
     public int colorType;
+    public string Message;
 }
 
 
@@ -35,16 +36,21 @@ public class ShapeList
 
 public class ShapeManager : MonoBehaviour
 {
+    public GameObject PanelSetMessage;
     public GameObject modelPrefab; // 3 prefabs are attached in the inspector
     public List<ShapeInfo> shapeInfoList = new List<ShapeInfo>();
     public List<GameObject> shapeObjList = new List<GameObject>();
     public Material mShapeMaterial;
+    public bool isAllowSetMarker;
+     
     private Color[] colorTypeOptions = { Color.cyan, Color.red, Color.yellow };
-
+    private ShapeInfo currentShapeInfo;
+    GameObject currentShape;
     // Use this for initialization
     void Start()
     {
-
+        isAllowSetMarker = false;
+        PanelSetMessage.SetActive(false);
     }
 
     // The HitTest to Add a Marker
@@ -69,9 +75,21 @@ public class ShapeManager : MonoBehaviour
 
                 Vector3 hitPosition = PNUtility.MatrixOps.GetPosition(placenoteTransform.Value);
                 Quaternion hitRotation = PNUtility.MatrixOps.GetRotation(placenoteTransform.Value);
-
+                isAllowSetMarker = false;
+                ShapeInfo shapeInfo = new ShapeInfo();
+                shapeInfo.px = hitPosition.x;
+                shapeInfo.py = hitPosition.y;
+                shapeInfo.pz = hitPosition.z;
+                shapeInfo.qx = hitRotation.x;
+                shapeInfo.qy = hitRotation.y;
+                shapeInfo.qz = hitRotation.z;
+                shapeInfo.qw = hitRotation.w;
+                currentShapeInfo = shapeInfo;
+                currentShape = Instantiate(modelPrefab);
+                currentShape.transform.position = new Vector3(shapeInfo.px, shapeInfo.py, shapeInfo.pz);
+                currentShape.transform.rotation = new Quaternion(shapeInfo.qx, shapeInfo.qy, shapeInfo.qz, shapeInfo.qw);
                 // add shape
-                AddShape(hitPosition, hitRotation);
+                //AddShape(hitPosition, hitRotation);
 
 
                 return true;
@@ -91,7 +109,7 @@ public class ShapeManager : MonoBehaviour
 
         // for simulation in the editor
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)&&isAllowSetMarker)
         {
             RaycastHit hit;
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -101,10 +119,10 @@ public class ShapeManager : MonoBehaviour
 
                 if (EventSystem.current.currentSelectedGameObject == null)
                 {
-                    
+                    PanelSetMessage.SetActive(true);
                     Quaternion dropRotation = Camera.main.transform.rotation;
-                    
 
+                    isAllowSetMarker = false;
                     ShapeInfo shapeInfo = new ShapeInfo();
                     shapeInfo.px = hit.point.x;
                     shapeInfo.py = hit.point.y;
@@ -113,10 +131,14 @@ public class ShapeManager : MonoBehaviour
                     shapeInfo.qy = dropRotation.y;
                     shapeInfo.qz = dropRotation.z;
                     shapeInfo.qw = dropRotation.w;
-                    shapeInfoList.Add(shapeInfo);
+                    currentShapeInfo = shapeInfo;
+                    currentShape = Instantiate(modelPrefab);
+                    currentShape.transform.position = new Vector3(shapeInfo.px, shapeInfo.py, shapeInfo.pz);
+                    currentShape.transform.rotation = new Quaternion(shapeInfo.qx, shapeInfo.qy, shapeInfo.qz, shapeInfo.qw);
+                    // shapeInfoList.Add(shapeInfo);
 
-                    GameObject shape = ShapeFromInfo(shapeInfo);
-                    shapeObjList.Add(shape);
+                    // GameObject shape = ShapeFromInfo(shapeInfo);
+                    // shapeObjList.Add(shape);
                 }
 
                
@@ -164,7 +186,20 @@ public class ShapeManager : MonoBehaviour
         }
 #endif
     }
+    public void SetLabel(string message)
+    {
 
+        currentShapeInfo.Message = message;
+        shapeInfoList.Add(currentShapeInfo);
+        currentShape.GetComponent<ControllerMessage>().LabelMarker.SetActive(true);
+        currentShape.GetComponent<ControllerMessage>().SetMessage(message);
+        
+        shapeObjList.Add(currentShape);
+        PanelSetMessage.SetActive(false);
+        isAllowSetMarker = true;
+
+
+    }
     public void OnSimulatorDropShape()
     {
         Vector3 dropPosition = Camera.main.transform.position + Camera.main.transform.forward * 0.3f;
@@ -207,6 +242,7 @@ public class ShapeManager : MonoBehaviour
         GameObject shape = Instantiate(modelPrefab);
         shape.transform.position = new Vector3(info.px, info.py, info.pz);
         shape.transform.rotation = new Quaternion(info.qx, info.qy, info.qz, info.qw);
+        shape.GetComponent<ControllerMessage>().SetMessage(info.Message);
         //shape.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
         //shape.GetComponent<MeshRenderer>().material = mShapeMaterial;
         //shape.GetComponent<MeshRenderer>().material.color = colorTypeOptions[info.colorType];
