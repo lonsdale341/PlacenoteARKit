@@ -145,6 +145,9 @@ public class ShapeManager : MonoBehaviour
                     currentShape.transform.position = new Vector3(shapeInfo.px, shapeInfo.py, shapeInfo.pz);
                     currentShape.transform.rotation = new Quaternion(shapeInfo.qx, shapeInfo.qy, shapeInfo.qz, shapeInfo.qw);
                     currentShape.transform.localScale = new Vector3(1, 1, 1) * CommonData.scaleMarker;
+
+                    currentShape.transform.rotation= Quaternion.LookRotation(new Vector3(Camera.main.transform.position.x, currentShape.transform.position.y, Camera.main.transform.position.z)- currentShape.transform.position, Vector3.up);
+
                     PanelSetMessage.SetActive(true);
                     ScaleSlider.value = CommonData.scaleMarker;
                     // shapeInfoList.Add(shapeInfo);
