@@ -24,7 +24,7 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 	[SerializeField] Slider mRadiusSlider;
 	[SerializeField] float mMaxRadiusSearch;
 	[SerializeField] Text mRadiusLabel;
-    [SerializeField] InputField SetMessage;
+    
     private UnityARSessionNativeInterface mSession;
 
 	private bool mARInit = false;
@@ -52,7 +52,7 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 	void Start ()
 	{
 		Input.location.Start ();
-
+        CommonData.scaleMarker = 1f;
 		mMapListPanel.SetActive (false);
 
 		mSession = UnityARSessionNativeInterface.GetARSessionNativeInterface ();
@@ -295,11 +295,7 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 		mSession.RunWithConfig (config);
  		#endif
 	}
-    public void OnSetMessage()
-    {
-        GetComponent<ShapeManager>().SetLabel(SetMessage.text);
-        SetMessage.text = "";
-    }
+    
 
 	public void OnSaveMapClick ()
 	{
