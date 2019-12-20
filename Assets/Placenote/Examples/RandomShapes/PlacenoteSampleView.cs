@@ -153,8 +153,8 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 		LibPlacenote.Instance.StopSession ();
         FeaturesVisualizer.clearPointcloud();
         GetComponent<ShapeManager>().ClearShapes();
-
-	}
+       
+    }
 
 
 	void AddMapToList (LibPlacenote.MapInfo mapInfo)
@@ -295,7 +295,17 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 		mSession.RunWithConfig (config);
  		#endif
 	}
-    
+    public void OnCancelMapping()
+    {
+        mInitButtonPanel.SetActive(true);
+        mMappingButtonPanel.SetActive(false);
+        mExitButton.SetActive(false);
+        GetComponent<ShapeManager>().ClearShapes();
+        GetComponent<ShapeManager>().isAllowSetMarker = false;
+        LibPlacenote.Instance.StopSession();
+        FeaturesVisualizer.clearPointcloud();
+        mLabelText.text = "Ready to Start!";
+    }
 
 	public void OnSaveMapClick ()
 	{
@@ -326,7 +336,7 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 				metadata.userdata = userdata;
 
                 JObject shapeList = GetComponent<ShapeManager>().Shapes2JSON();
-
+                Debug.Log("SP_LIST=" + shapeList);
 				userdata["shapeList"] = shapeList;
                 GetComponent<ShapeManager>().ClearShapes();
 
