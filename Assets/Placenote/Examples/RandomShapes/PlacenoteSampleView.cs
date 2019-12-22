@@ -196,8 +196,8 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 					mExitButton.SetActive (true);
 
 					LibPlacenote.Instance.StartSession ();
-
-					if (mReportDebug) {
+                    FeaturesVisualizer.clearPointcloud();
+                    if (mReportDebug) {
 						LibPlacenote.Instance.StartRecordDataset (
 							(datasetCompleted, datasetFaulted, datasetPercentage) => {
 
