@@ -67,10 +67,11 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 		mSimulatorAddShapeButton.SetActive(true);
 		#endif
 	}
-		
-	void Update ()
+    
+    void Update ()
 	{
-		if (!mARInit && LibPlacenote.Instance.Initialized()) {
+        Debug.Log(Camera.main.cullingMask);
+        if (!mARInit && LibPlacenote.Instance.Initialized()) {
 			mARInit = true;
 			mLabelText.text = "Ready to Start!";
 		}
@@ -177,7 +178,7 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 
 	public void OnLoadMapClicked ()
 	{
-        
+        Camera.main.cullingMask = 32; 
         ConfigureSession ();
 
 		if (!LibPlacenote.Instance.Initialized()) {
@@ -247,7 +248,7 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 
 	public void OnNewMapClick ()
 	{
-       
+        Camera.main.cullingMask = -1;
         ConfigureSession ();
 
 		if (!LibPlacenote.Instance.Initialized()) {

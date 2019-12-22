@@ -41,7 +41,7 @@ namespace ARKitPlaneSaver
             FeaturesVisualizer.EnablePointcloud();
             LibPlacenote.Instance.RegisterListener(this);
         }
-
+  
         public void OnExitClick()
         {
             mInitButtonPanel.SetActive(true);
@@ -60,6 +60,7 @@ namespace ARKitPlaneSaver
         // Load map and relocalize. Check OnStatusChange function for behaviour upon relocalization
         public void OnLoadMapClicked()
         {
+            
             // delete the planes.
             ConfigureSession(false, false);
 
