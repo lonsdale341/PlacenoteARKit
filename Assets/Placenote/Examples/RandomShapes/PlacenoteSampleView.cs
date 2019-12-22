@@ -177,7 +177,8 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 
 	public void OnLoadMapClicked ()
 	{
-		ConfigureSession ();
+        FeaturesVisualizer.DisablePointcloud();
+        ConfigureSession ();
 
 		if (!LibPlacenote.Instance.Initialized()) {
 			Debug.Log ("SDK not yet initialized");
@@ -196,7 +197,7 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 					mExitButton.SetActive (true);
 
 					LibPlacenote.Instance.StartSession ();
-                    FeaturesVisualizer.clearPointcloud();
+                    
                     if (mReportDebug) {
 						LibPlacenote.Instance.StartRecordDataset (
 							(datasetCompleted, datasetFaulted, datasetPercentage) => {
@@ -245,7 +246,8 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 
 	public void OnNewMapClick ()
 	{
-		ConfigureSession ();
+        FeaturesVisualizer.EnablePointcloud();
+        ConfigureSession ();
 
 		if (!LibPlacenote.Instance.Initialized()) {
 			Debug.Log ("SDK not yet initialized");
