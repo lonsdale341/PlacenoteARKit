@@ -177,7 +177,7 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 
 	public void OnLoadMapClicked ()
 	{
-        FeaturesVisualizer.DisablePointcloud();
+        
         ConfigureSession ();
 
 		if (!LibPlacenote.Instance.Initialized()) {
@@ -221,7 +221,8 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 				}
 			}
 		);
-	}
+        FeaturesVisualizer.clearPointcloud();
+    }
 
 	public void OnDeleteMapClicked ()
 	{
@@ -246,7 +247,7 @@ public class PlacenoteSampleView : MonoBehaviour, PlacenoteListener
 
 	public void OnNewMapClick ()
 	{
-        FeaturesVisualizer.EnablePointcloud();
+       
         ConfigureSession ();
 
 		if (!LibPlacenote.Instance.Initialized()) {
